@@ -199,18 +199,6 @@ class HotelDB():
         }
         # 创建数据库
         self.client.schema.create(schema)
-
-        # 检查本地是否已存在 hotel.json 文件
-        # 如果文件不存在，从指定的 URL 下载酒店数据并保存为 hotel.json
-        # url = 'https://raw.githubusercontent.com/agiclass/hotel-chatbot/main/data/hotel.json'
-        # if not os.path.exists('hotel.json'):
-        #     print("Downloading file...")
-        #     response = requests.get(url)
-        #     with open('hotel.json', 'wb') as file:
-        #         file.write(response.content)
-        #     print("Download complete!")
-        # else:
-        #     print("File already exists.")
         # 打开并读取 hotel.json 文件，将 JSON 数据加载为 hotels 列表，每个元素代表一个酒店信息的字典
         with open('hotel.json', 'r') as f:
             hotels = json.load(f)
@@ -244,12 +232,12 @@ class HotelDB():
 
         # 2、组装过滤条件
         # filters 初始化了一个过滤条件，默认过滤掉价格为 0 的酒店
-        # keys 是 dsl 中的关键字段，可能包含 type、价格和评分范围
         filters = [{
             "path": ["price"],
             "operator": "GreaterThan",
             "valueNumber": 0,
         }]
+        # keys 是 dsl 中的关键字段，包含 类型、价格和评分范围
         keys = [
             "type",
             "price_range_lower",
@@ -259,7 +247,7 @@ class HotelDB():
         ]
         # 根据 dsl 中的条件，将附加更多的过滤条件
         if any(key in dsl for key in keys):
-            # 根据 dsl 中的具体条件，将 type、价格范围、评分范围等过滤条件添加到 filters 列表中
+            # 根据 dsl 中的具体条件，将 类型、价格范围、评分范围等过滤条件添加到 filters 列表中
             if "type" in dsl:
                 filters.append(
                     {
@@ -329,6 +317,7 @@ class HotelDB():
             query = query.with_limit(_limit)
             # 执行构建的查询，并将结果存储到 result 中
             result = query.do()
+            # print('1、向量搜索的结果是:',result)
             # 查询的结果使用 rrf 方法进行融合排名
             # result["data"]["Get"][name] 获取查询返回的酒店信息列表，name 是类名"Hotel"
             # rrf([candidates, result["data"]["Get"][name]]) 使用 rrf（融合排名算法）方法对查询结果进行融合排名
@@ -349,7 +338,7 @@ class HotelDB():
             # BM25 是一种常用的文本检索算法，特别适合用于短文本和模糊匹配
             query = query.with_bm25(query=text, properties=["_name"])
             # 这里将 filters 作为查询的条件
-            # 如果定义了 filters，则将其应用到查询中，以进一步筛选结果。例如，过滤条件可能包含价格、评分等限制
+            # 如果定义了 filters，则将其应用到查询中，以进一步筛选结果。如过滤条件可能包含价格、评分等限制
             if filters:
                 query = query.with_where(filters)
             # 设置查询返回的最大结果数量
@@ -458,9 +447,14 @@ if __name__ == "__main__":
     db = HotelDB()
 
     # 1、写入数据
-    # db.insert()
-    # print('完成数据入库')
+    db.insert()
+    print('完成数据入库')
 
     # 2、查询数据
-    result = db.search({'facilities':['打麻将']}, limit=3)
-    print(json.dumps(result,ensure_ascii=False))
+    # result = db.search({'facilities':['吹风机']}, limit=3)
+    # 排序
+    # result = db.search({'facilities':['吹风机'],'sort.slot':'rating','sort.ordering':'descend'}, limit=3)
+    # 指定酒店
+    # result = db.search({'name':'北京京仪大酒店','facilities':['SPA'],'sort.slot':'rating','sort.ordering':'descend'}, limit=3)
+
+    # print(json.dumps(result,ensure_ascii=False))
