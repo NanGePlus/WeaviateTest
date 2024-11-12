@@ -66,8 +66,8 @@ def rrf(rankings, k=60):
 # 定义一个名为 HotelDB 的类，用于管理酒店数据的数据库接口，尤其是与 Weaviate 数据库的交互
 class HotelDB():
     # 初始化方法 __init__，用于设置 Weaviate 数据库连接
-    # def __init__(self, url="http://localhost:8080"):
-    def __init__(self, url="http://139.224.72.218:8080"):
+    def __init__(self, url="http://localhost:8080"):
+    # def __init__(self, url="http://139.224.72.218:8080"):
         # 使用 weaviate.Client 连接到指定的 URL 地址，并在请求头中添加X-Openai-Baseurl、X-OpenAI-Api-Key
         # os.getenv("OPENAI_API_BASE") 从环境变量中加载 OpenAI URL地址(代理方式).env 文件中配置并通过 load_dotenv() 加载
         # os.getenv("OPENAI_API_KEY") 从环境变量中加载 OpenAI API 密钥，确保该 API 密钥已在 .env 文件中配置并通过 load_dotenv() 加载
