@@ -2,7 +2,10 @@
 Weaviate (we-vee-eight) 是一个开源的AI原生向量数据库,可同时存储对象和向量，这样就可以将向量搜索与结构化过滤结合使用          
 官网地址: https://weaviate.io/                         
 github地址:https://github.com/weaviate/weaviate           
-本次分享为大家演示如何安装部署、国内如何配置使用embedding模型、数据写入和查询                     
+本次分享为大家演示如何安装部署、国内如何配置使用embedding模型、数据写入和查询                 
+视频链接如下:             
+https://www.bilibili.com/video/BV1LhUAYFEku/?vd_source=30acb5331e4f5739ebbad50f7cc6b949            
+https://youtu.be/hD09V7jaXSo                     
 # 2、前期准备工作
 ## 2.1 开发环境搭建:anaconda、pycharm
 anaconda:提供python虚拟环境，官网下载对应系统版本的安装包安装即可                                      
